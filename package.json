@@ -1,0 +1,34 @@
+{
+  "name": "vigo-isi-arkiv",
+  "version": "1.0.0",
+  "description": "gets and archives documents from isi-lokal service",
+  "main": "./scripts/queue-and-handle-documents.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vtfk/vigo-isi-arkiv.git"
+  },
+  "keywords": [
+    "archive",
+    "vigo"
+  ],
+  "author": "jorgtho",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vtfk/vigo-isi-arkiv/issues"
+  },
+  "homepage": "https://github.com/vtfk/vigo-isi-arkiv#readme",
+  "dependencies": {
+    "@vestfoldfylke/msal-token": "^1.0.1",
+    "@vtfk/logger": "^6.0.1",
+    "axios": "^1.6.2",
+    "dotenv": "^16.3.1",
+    "file-system-cache": "^2.4.4",
+    "xml2js": "^0.6.2"
+  },
+  "devDependencies": {
+    "standard": "^17.1.0"
+  }
+}

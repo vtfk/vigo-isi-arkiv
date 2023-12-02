@@ -128,3 +128,20 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Certificates
+*.pfx
+*.pem
+*.key
+*.cert
+*.cer
+
+# Local publish sites file
+config/source-libraries.js
+config/reset-libraries.js
+
+# Local documents
+documents/
+
+# Local file cache
+/.file-cache/
