@@ -1,7 +1,13 @@
 const { RETRY_INTERVALS_MINUTES } = require('../config')
 const { logger } = require('@vtfk/logger')
-const { syncElevmappe } = require('./sync-elevmappe')
 const { renameSync, writeFileSync, existsSync, unlinkSync } = require('fs')
+const { syncElevmappe } = require('./sync-elevmappe')
+const { archive } = require('./archive')
+const { signOff } = require('./signoff')
+const { statusVigo } = require('./set-status-vigo')
+const { archiveResponseLetter } = require('./archive-response-letter')
+const { sendResponseLetter } = require('./send-response-letter')
+const { signOffResponseLetter } = require('./signoff-response-letter')
 
 const shouldRunJob = (jobName, documentData, flowDefinition) => {
   if (documentData.flowStatus.failed) return false
@@ -71,6 +77,90 @@ const handleDocument = async (documentData, flowDefinition) => {
       if (!documentData.flowStatus[jobName]) documentData.flowStatus[jobName] = { jobFinished: false }
       try {
         const result = await syncElevmappe(documentData)
+        documentData.flowStatus[jobName].result = result
+        documentData.flowStatus[jobName].jobFinished = true
+      } catch (error) {
+        documentData.flowStatus.failed = true
+        handleFailedJob(jobName, documentData, error)
+      }
+    }
+  }
+  {
+    const jobName = 'archive'
+    if (shouldRunJob(jobName, documentData, flowDefinition)) {
+      if (!documentData.flowStatus[jobName]) documentData.flowStatus[jobName] = { jobFinished: false }
+      try {
+        const result = await archive(documentData, flowDefinition)
+        documentData.flowStatus[jobName].result = result
+        documentData.flowStatus[jobName].jobFinished = true
+      } catch (error) {
+        documentData.flowStatus.failed = true
+        handleFailedJob(jobName, documentData, error)
+      }
+    }
+  }
+  {
+    const jobName = 'signOff'
+    if (shouldRunJob(jobName, documentData, flowDefinition)) {
+      if (!documentData.flowStatus[jobName]) documentData.flowStatus[jobName] = { jobFinished: false }
+      try {
+        const result = await signOff(documentData)
+        documentData.flowStatus[jobName].result = result
+        documentData.flowStatus[jobName].jobFinished = true
+      } catch (error) {
+        documentData.flowStatus.failed = true
+        handleFailedJob(jobName, documentData, error)
+      }
+    }
+  }
+  {
+    const jobName = 'statusVigo'
+    if (shouldRunJob(jobName, documentData, flowDefinition)) {
+      if (!documentData.flowStatus[jobName]) documentData.flowStatus[jobName] = { jobFinished: false }
+      try {
+        const result = await statusVigo(documentData)
+        documentData.flowStatus[jobName].result = result
+        documentData.flowStatus[jobName].jobFinished = true
+      } catch (error) {
+        documentData.flowStatus.failed = true
+        handleFailedJob(jobName, documentData, error)
+      }
+    }
+  }
+  {
+    const jobName = 'archiveResponseLetter'
+    if (shouldRunJob(jobName, documentData, flowDefinition)) {
+      if (!documentData.flowStatus[jobName]) documentData.flowStatus[jobName] = { jobFinished: false }
+      try {
+        const result = await archiveResponseLetter(documentData)
+        documentData.flowStatus[jobName].result = result
+        documentData.flowStatus[jobName].jobFinished = true
+      } catch (error) {
+        documentData.flowStatus.failed = true
+        handleFailedJob(jobName, documentData, error)
+      }
+    }
+  }
+  {
+    const jobName = 'sendResponseLetter'
+    if (shouldRunJob(jobName, documentData, flowDefinition)) {
+      if (!documentData.flowStatus[jobName]) documentData.flowStatus[jobName] = { jobFinished: false }
+      try {
+        const result = await sendResponseLetter(documentData)
+        documentData.flowStatus[jobName].result = result
+        documentData.flowStatus[jobName].jobFinished = true
+      } catch (error) {
+        documentData.flowStatus.failed = true
+        handleFailedJob(jobName, documentData, error)
+      }
+    }
+  }
+  {
+    const jobName = 'signOffResponseLetter'
+    if (shouldRunJob(jobName, documentData, flowDefinition)) {
+      if (!documentData.flowStatus[jobName]) documentData.flowStatus[jobName] = { jobFinished: false }
+      try {
+        const result = await signOffResponseLetter(documentData)
         documentData.flowStatus[jobName].result = result
         documentData.flowStatus[jobName].jobFinished = true
       } catch (error) {

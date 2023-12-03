@@ -50,7 +50,7 @@
   try {
     const queueResult = await handleQueue(VFK_COUNTY)
     logConfig({
-      prefix: 'queueAndHandleReadyDocuments', // Reset prefix
+      prefix: 'queueAndHandleReadyDocuments' // Reset prefix
     })
     logger('info', [`Handled documents from ${VFK_COUNTY.NAME} queue, result: handledDocs ${queueResult.handledDocs}, skippedDocs: ${queueResult.skippedDocs}, unhandledErrors: ${queueResult.unhandledErrors}`])
   } catch (error) {

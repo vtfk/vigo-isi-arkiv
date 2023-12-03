@@ -14,7 +14,7 @@ const handleQueue = async (county) => {
   const result = {
     handledDocs: 0,
     skippedDocs: 0,
-    unhandledErrors: 0,
+    unhandledErrors: 0
   }
   for (const document of queue) {
     logConfig({

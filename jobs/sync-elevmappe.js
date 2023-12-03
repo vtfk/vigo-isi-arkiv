@@ -58,7 +58,7 @@ const syncElevmappe = async (documentData) => {
   const skipDsfResponse = await callArchive(documentData.flowStatus.county, 'SyncElevmappe', skipDsfPayload)
   logger('info', ['syncElevmappe', 'Synced elevmappe with manualdata, finished'])
   return skipDsfResponse
-  
+
   /* // Permanent fra 1.1.24 (tja permanent er vel å ta i :P)
   const manualDataResponse = await callArchive(documentData.flowStatus.county, 'SyncElevmappe', manualDataPayload)
   logger('info', ['syncElevmappe', 'Synced elevmappe with manualdata, finished'])

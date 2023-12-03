@@ -35,9 +35,13 @@ module.exports = {
     TENANT_ID: process.env.VFK_ARCHIVE_TENANT_ID,
     SCOPE: process.env.VFK_ARCHIVE_SCOPE
   },
-  STATISTICS: {
-    URL: process.env.STATISTICS_URL,
-    KEY: process.env.STATISTICS_KEY
+  VFK_STATS: {
+    URL: process.env.VFK_STATS_URL,
+    KEY: process.env.VFK_STATS_KEY
+  },
+  TFK_STATS: {
+    URL: process.env.TFK_STATS_URL,
+    KEY: process.env.TFK_STATS_KEY
   },
   MOCK_ISI_LOKAL: (process.env.MOCK_ISI_LOKAL && process.env.MOCK_ISI_LOKAL === 'true') || false, // If set to string true in env - wll fetch mock-files instead og isi-lokal files
   MOCK_FNR: process.env.MOCK_FNR || false, // If set in env will replace all Fodselsnummer with the FNR set in env (e.g when testing Svarut)
