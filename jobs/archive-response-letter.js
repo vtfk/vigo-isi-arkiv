@@ -33,7 +33,7 @@ const archiveResponseLetter = async (documentData) => {
   logger('info', ['archiveResponseLetter', 'Trying to create and archive responseLetter'])
 
   // First check if we have address block or invalid zip-code (If address code is not 0, we have addressProtection, or if zipcode length is not 4, or if zipcode is 9999, or if address is unknown)
-  const privatePerson = documentData.flowStatus.syncElevmappe.privatePerson
+  const privatePerson = documentData.flowStatus.syncElevmappe.result.privatePerson
   logger('info', ['archiveResponseLetter', 'Checking address of privatePerson'])
   const { invalidAddress, invalidAddressMsg } = invalidAddressCheck(privatePerson)
 
@@ -76,9 +76,9 @@ const archiveResponseLetter = async (documentData) => {
         documentDate: documentData.Dokumentelement.Dokumentdato
       }
     }
-    logger('info', ['archiveResponseLetter', 'Updating document in archive'])
+    logger('info', ['archiveResponseLetter', 'Creating response-letter document in archive'])
     const archiveResponse = await callArchive(documentData.flowStatus.county, 'archive', responseLetterPayload)
-    logger('info', ['archiveResponseLetter', 'Finished updating document in archive, returning and finished'])
+    logger('info', ['archiveResponseLetter', `Document created ${archiveResponse.DocumentNumber}, returning and finished`])
     return {
       invalidAddress,
       invalidAddressMsg,
