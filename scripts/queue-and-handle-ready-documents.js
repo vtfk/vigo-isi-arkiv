@@ -87,5 +87,4 @@
 
   // Cleanup finished documnents
   deleteFinishedDocuments(TFK_COUNTY)
-
 })()

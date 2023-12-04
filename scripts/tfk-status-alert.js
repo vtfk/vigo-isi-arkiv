@@ -16,8 +16,7 @@
     localLogger: createLocalLogger('status-alert')
   })
 
-  const getTodayString = (date) => date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()
-
+  const getTodayString = (date) => date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
 
   const queue = readdirSync(`./documents/${county.NAME}/queue`)
   const finished = readdirSync(`./documents/${county.NAME}/finished`)
@@ -28,7 +27,7 @@
     if (getTodayString(new Date(finishedTimestamp)) === today) finishedToday.push(doc)
   }
   const failed = readdirSync(`./documents/${county.NAME}/failed`)
-  
+
   let msg
   let colour
   const problems = queue.length + failed.length
@@ -53,7 +52,7 @@
   }
 
   const failedFacts = failed.length > 0 ? [{ name: 'Dokumentnavn', value: `- ${failed.join(' \r- ')}` }] : []
-    
+
   const teamsMsg = {
     '@type': 'MessageCard',
     '@context': 'http://schema.org/extensions',
@@ -84,7 +83,7 @@
     try {
       await axios.post(webhook, teamsMsg, { headers })
     } catch (error) {
-      logger('error', [`Failed when posting status to webhook`, error.repsonse?.data || error.stack || error.toString()])
+      logger('error', ['Failed when posting status to webhook', error.repsonse?.data || error.stack || error.toString()])
     }
   }
 })()

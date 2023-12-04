@@ -22,20 +22,20 @@ const stats = async (documentData, flowDefinition) => {
     // optional fields:
     jobs,
     elevmappe: documentData.flowStatus.syncElevmappe.result.elevmappe.CaseNumber,
-    documentNumber: documentData.flowStatus.archive?.result?.DocumentNumber || null // Fyll på røkla her og test senere
+    documentNumber: documentData.flowStatus.archive?.result?.DocumentNumber || null
   }
 
   const tfkStatisticsPayload = {
     system: 'vigo-isi-arkiv', // Required. System name. New system creates a new collection
     engine: `${name} ${version}`,
-    company: 'UT', // Required. Sector
+    company: 'OF', // Required. Sector
     description: 'Automatisk arkivering av et dokument fra Vigo', // Required. A description of what the statistic element represents
     type: documentData.Dokumentelement.Dokumenttype, // Required. A short searchable type-name that distinguishes the statistic element
     externalId: documentData.Dokumentelement.DokumentId, // Optional. ID in the external {system}
     // optional fields:
     jobs,
     elevmappe: documentData.flowStatus.syncElevmappe.result.elevmappe.CaseNumber,
-    documentNumber: documentData.flowStatus.archive?.result?.DocumentNumber || null // Fyll på røkla her og test senere
+    documentNumber: documentData.flowStatus.archive?.result?.DocumentNumber || null
   }
 
   // VFK stats
