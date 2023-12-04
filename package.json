@@ -5,7 +5,10 @@
   "main": "./scripts/queue-and-handle-documents.js",
   "scripts": {
     "test": "standard && jest",
-    "test:verbose": "jest --verbose"
+    "test:verbose": "jest --verbose",
+    "start": "node ./scripts/queue-and-handle-ready-documents.js",
+    "vfk_status": "node ./scripts/vfk-status-alert.js",
+    "tfk_status": "node ./scripts/tfk-status-alert.js"
   },
   "repository": {
     "type": "git",
