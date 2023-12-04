@@ -55,7 +55,7 @@ const queueReadyDocuments = async (county, numberOfDocs) => {
 
     // MOCK FNR
     if (MOCK_FNR) {
-      logger('warn', [`queueReadyDocuments - ${county.NAME}`, `MOCK_FNR is true, will override Fodselsnummer in document with MOCK_FNR: ${MOCK_FNR}`])
+      logger('warn', [`queueReadyDocuments - ${county.NAME}`, 'MOCK_FNR is true, will override Fodselsnummer in document with MOCK_FNR'])
       document.Fodselsnummer = MOCK_FNR
     }
 
@@ -65,7 +65,7 @@ const queueReadyDocuments = async (county, numberOfDocs) => {
         documentName,
         documentPath,
         county,
-        createdTimeStamp: now.toISOString(),
+        createdTimestamp: now.toISOString(),
         finished: false,
         failed: false,
         runs: 0,

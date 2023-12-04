@@ -28,7 +28,11 @@ const statusVigo = async (documentData) => {
     logger('info', ['statusVigo', 'Success when setting status in vigo-isi, finished'])
     return repackedIsiResponse
   } else {
-    // logger('error', ['statusVigo', 'Error when setting status in vigo-isi!', repackedIsiResponse])
+    //data.Feiltype === 'EXCEPTION I STATUSOPPDATERING' && data.DetaljertBeskrivelse.includes('Message handling of') && data.DetaljertBeskrivelse.includes('already completed')
+    if (repackedIsiResponse.Feiltype === 'EXCEPTION I STATUSOPPDATERING' && repackedIsiResponse.DetaljertBeskrivelse.includes('Message handling of') && repackedIsiResponse.DetaljertBeskrivelse.includes('already completed')) {
+      logger('warn', ['statusVigo', 'Document was already handled gitt, guess we are finished :O', `${repackedIsiResponse.FeilId} - Feiltype: ${repackedIsiResponse.Feiltype} - DetaljertBeskrivelse: ${repackedIsiResponse.DetaljertBeskrivelse}`])
+      return repackedIsiResponse
+    }
     throw new Error(`Failed when setting status in vigo, FeilId: ${repackedIsiResponse.FeilId} - Feiltype: ${repackedIsiResponse.Feiltype} - DetaljertBeskrivelse: ${repackedIsiResponse.DetaljertBeskrivelse}`)
   }
 }

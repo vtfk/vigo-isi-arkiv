@@ -1,28 +1,28 @@
-const { invalidAddressCheck } = require("../jobs/archive-response-letter")
+const { invalidAddressCheck } = require('../jobs/archive-response-letter')
 
 const okAddress = {
   streetAddress: 'Gata 4',
-  zipCode: '1234',
+  zipCode: '1234'
 }
 
 const invalidZipCode = {
   streetAddress: 'Gata 4',
-  zipCode: '123',
+  zipCode: '123'
 }
 
 const invalidZipCode2 = {
   streetAddress: 'Gata 4',
-  zipCode: '12345',
+  zipCode: '12345'
 }
 
 const invalidZipCode3 = {
   streetAddress: 'Gata 4',
-  zipCode: '9999',
+  zipCode: '9999'
 }
 
 const invalidStreetAddress = {
   streetAddress: 'Ukjent adresse',
-  zipCode: '1234',
+  zipCode: '1234'
 }
 
 const hasAddressProtection = {

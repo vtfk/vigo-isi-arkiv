@@ -8,6 +8,7 @@ const { statusVigo } = require('./set-status-vigo')
 const { archiveResponseLetter } = require('./archive-response-letter')
 const { sendResponseLetter } = require('./send-response-letter')
 const { signOffResponseLetter } = require('./signoff-response-letter')
+const { stats } = require('./stats')
 
 const shouldRunJob = (jobName, documentData, flowDefinition) => {
   if (documentData.flowStatus.failed) return false
@@ -55,6 +56,8 @@ const handleFailedJob = async (jobName, documentData, error) => {
 
 const finishDocument = (documentData) => {
   logger('info', ['finishDocument', 'All jobs finished, cleaning up and moving from queue to finished'])
+  documentData.flowStatus.finished = true
+  documentData.flowStatus.finishedTimestamp = new Date().toISOString()
   writeFileSync(`./documents/${documentData.flowStatus.county.NAME}/finished/${documentData.flowStatus.documentName}.json`, JSON.stringify(documentData, null, 2))
   logger('info', ['finishDocument', 'Successfully created document in finished dir, deleting original from queue (if it exists)'])
   if (existsSync(documentData.flowStatus.documentPath)) unlinkSync(documentData.flowStatus.documentPath)
@@ -170,25 +173,11 @@ const handleDocument = async (documentData, flowDefinition) => {
     }
   }
   {
-    const jobName = 'fail'
+    const jobName = 'stats'
     if (shouldRunJob(jobName, documentData, flowDefinition)) {
       if (!documentData.flowStatus[jobName]) documentData.flowStatus[jobName] = { jobFinished: false }
       try {
-        throw new Error('Haha, failed on purpose!')
-        documentData.flowStatus[jobName].result = result
-        documentData.flowStatus[jobName].jobFinished = true
-      } catch (error) {
-        documentData.flowStatus.failed = true
-        handleFailedJob(jobName, documentData, error)
-      }
-    }
-  }
-  {
-    const jobName = 'stats'
-    if (shouldRunJob(jobName, documentData, flowDefinition) && false) {
-      if (!documentData.flowStatus[jobName]) documentData.flowStatus[jobName] = { jobFinished: false }
-      try {
-        const result = await statistics(documentData)
+        const result = await stats(documentData, flowDefinition)
         documentData.flowStatus[jobName].result = result
         documentData.flowStatus[jobName].jobFinished = true
       } catch (error) {
@@ -199,7 +188,7 @@ const handleDocument = async (documentData, flowDefinition) => {
   }
   {
     const jobName = 'finishDocument'
-    if (shouldRunJob(jobName, documentData) && false) { // Runs regardless of flowdefinition
+    if (shouldRunJob(jobName, documentData)) { // Runs regardless of flowdefinition
       if (!documentData.flowStatus[jobName]) documentData.flowStatus[jobName] = { jobFinished: false }
       try {
         const result = await finishDocument(documentData)
