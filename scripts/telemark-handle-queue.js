@@ -1,11 +1,11 @@
-/* FOR ONLY RUNNING QUEUE */
+/* FOR ONLY RUNNING HANDLE DOCS (NOT ASK ISI-LOKAL FOR NEW DOCS) */
 
 (async () => {
   const { logger, logConfig } = require('@vtfk/logger')
   const { createLocalLogger } = require('../lib/local-logger')
   const { mkdirSync, existsSync } = require('fs')
-  const { queueReadyDocuments } = require('../jobs/queue-ready-documents')
-  const { TFK_COUNTY, NUMBER_OF_DOCS } = require('../config.js')
+  const { handleQueue } = require('../jobs/handle-queue.js')
+  const { TFK_COUNTY } = require('../config.js')
 
   // Set up logging
   logConfig({
@@ -32,11 +32,14 @@
   syncDir(`./documents/${TFK_COUNTY.NAME}/failed`)
   syncDir(`./documents/${TFK_COUNTY.NAME}/finished`)
 
-  // Queue ready documents for Telemark
+  // Handle queue for Telemark
   try {
-    const queueMessage = await queueReadyDocuments(TFK_COUNTY, NUMBER_OF_DOCS)
-    logger('info', queueMessage)
+    const queueResult = await handleQueue(TFK_COUNTY)
+    logConfig({
+      prefix: 'queueAndHandleReadyDocuments' // Reset prefix
+    })
+    logger('info', [`Handled documents from ${TFK_COUNTY.NAME} queue, result: handledDocs ${queueResult.handledDocs}, skippedDocs: ${queueResult.skippedDocs}, unhandledErrors: ${queueResult.unhandledErrors}`])
   } catch (error) {
-    logger('error', [`Failed when queueing ready documents for county: ${TFK_COUNTY.NAME}`, 'error', error.response?.data || error.stack || error.toString()])
+    logger('error', [`Failed when queueing ready documents for countyNumber: ${TFK_COUNTY.NAME}`, 'error', error.response?.data || error.stack || error.toString()])
   }
 })()

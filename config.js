@@ -1,6 +1,6 @@
 require('dotenv').config()
 
-const RETRY_INTERVALS_MINUTES = (process.env.RETRY_INTERVALS_MINUTES && process.env.RETRY_INTERVALS_MINUTES.split(',').map(numStr => Number(numStr))) || [15, 60, 240, 3600]
+const RETRY_INTERVALS_MINUTES = (process.env.RETRY_INTERVALS_MINUTES && process.env.RETRY_INTERVALS_MINUTES.split(',').map(numStr => Number(numStr))) || [15, 60, 240, 3600, 3600]
 
 module.exports = {
   VFK_COUNTY: {
