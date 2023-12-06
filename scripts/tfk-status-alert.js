@@ -1,11 +1,11 @@
 (async () => {
   const { logger, logConfig } = require('@vtfk/logger')
-  const { TEAMS_STATUS_WEBHOOK_URLS, VFK_COUNTY, DELETE_FINISHED_AFTER_DAYS } = require('../config')
+  const { TEAMS_STATUS_WEBHOOK_URLS, TFK_COUNTY, DELETE_FINISHED_AFTER_DAYS, RETRY_INTERVALS_MINUTES} = require('../config')
   const axios = require('../lib/axios-instance').getAxiosInstance()
   const { createLocalLogger } = require('../lib/local-logger')
   const { readdirSync } = require('fs')
 
-  const county = VFK_COUNTY
+  const county = TFK_COUNTY
 
   // Set up logging
   logConfig({
@@ -16,15 +16,15 @@
     localLogger: createLocalLogger('status-alert')
   })
 
-  const getTodayString = (date) => date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
+  const getDateString = (date) => date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
 
   const queue = readdirSync(`./documents/${county.NAME}/queue`)
   const finished = readdirSync(`./documents/${county.NAME}/finished`)
-  const finishedToday = []
-  const today = getTodayString(new Date())
+  const finishedYesterday = []
+  const yesterday = getDateString(new Date(Date.now() - 8640000))
   for (const doc of finished) {
     const { flowStatus: { finishedTimestamp } } = require(`../documents/${county.NAME}/finished/${doc}`)
-    if (getTodayString(new Date(finishedTimestamp)) === today) finishedToday.push(doc)
+    if (getDateString(new Date(finishedTimestamp)) === yesterday) finishedYesterday.push(doc)
   }
   const failed = readdirSync(`./documents/${county.NAME}/failed`)
 
@@ -67,11 +67,11 @@
       },
       {
         activityTitle: `😱 **${failed.length}** dokumenter har feilet for mange ganger`,
-        activitySubtitle: 'Dette er dokumenter som er forsøkt for mange ganger, og trenger hjelp',
+        activitySubtitle: `Dette er dokumenter som er forsøkt for mange ganger (${RETRY_INTERVALS_MINUTES.length}), og trenger hjelp`,
         facts: failedFacts
       },
       {
-        activityTitle: `👍 **${finishedToday.length}** dokumenter er håndtert og ferdigstilt i så langt i dag. ${finishedToday.length > 10 ? 'Flotte greier 😎' : 'Tja, det funker vel det og 🙃'}`,
+        activityTitle: `👍 **${finishedYesterday.length}** dokumenter ble håndtert og ferdigstilt i går. ${finishedYesterday.length > 10 ? 'Flotte greier 😎' : 'Tja, det funker vel det og 🙃'}`,
         activitySubtitle: `Dette er dokumenter som er hentet fra ISI-lokal, og er ferdig håndtert basert på hvilken dokumenttype det er - vil bli slettet fra server etter ${DELETE_FINISHED_AFTER_DAYS} dager.`,
         markdown: true
       }
