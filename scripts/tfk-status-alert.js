@@ -81,7 +81,7 @@
 
   for (const webhook of TEAMS_STATUS_WEBHOOK_URLS) {
     try {
-      //await axios.post(webhook, teamsMsg, { headers })
+      await axios.post(webhook, teamsMsg, { headers })
     } catch (error) {
       logger('error', ['Failed when posting status to webhook', error.repsonse?.data || error.stack || error.toString()])
     }
