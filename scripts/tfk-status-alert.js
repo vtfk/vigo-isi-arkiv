@@ -21,7 +21,7 @@
   const queue = readdirSync(`./documents/${county.NAME}/queue`)
   const finished = readdirSync(`./documents/${county.NAME}/finished`)
   const finishedYesterday = []
-  const yesterday = getDateString(new Date(Date.now() - 8640000))
+  const yesterday = getDateString(new Date(Date.now() - 86400000))
   for (const doc of finished) {
     const { flowStatus: { finishedTimestamp } } = require(`../documents/${county.NAME}/finished/${doc}`)
     if (getDateString(new Date(finishedTimestamp)) === yesterday) finishedYesterday.push(doc)
@@ -81,7 +81,7 @@
 
   for (const webhook of TEAMS_STATUS_WEBHOOK_URLS) {
     try {
-      await axios.post(webhook, teamsMsg, { headers })
+      //await axios.post(webhook, teamsMsg, { headers })
     } catch (error) {
       logger('error', ['Failed when posting status to webhook', error.repsonse?.data || error.stack || error.toString()])
     }
