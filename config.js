@@ -3,13 +3,14 @@ require('dotenv').config()
 const RETRY_INTERVALS_MINUTES = (process.env.RETRY_INTERVALS_MINUTES && process.env.RETRY_INTERVALS_MINUTES.split(',').map(numStr => Number(numStr))) || [15, 60, 240, 3600, 3600]
 
 module.exports = {
+  OVERRIDE_TO_VTFK_ARCHIVE: (process.env.OVERRIDE_TO_VTFK_ARCHIVE && process.env.OVERRIDE_TO_VTFK_ARCHIVE === 'true') || false, // ENDRE TIL DEFAULT false, når tiden er inne
   VFK_COUNTY: {
     COUNTY_NUMBER: process.env.VFK_COUNTY_NUMBER || '39',
     NAME: process.env.VFK_COUNTY_NAME || 'vestfold'
   },
   TFK_COUNTY: {
     COUNTY_NUMBER: process.env.TFK_COUNTY_NUBER || '40',
-    NAME: process.env.VFK_COUNTY_NAME || 'telemark'
+    NAME: process.env.TFK_COUNTY_NAME || 'telemark'
   },
   NUMBER_OF_DOCS: process.env.NUMBER_OF_DOCS || '10',
   ISI_LOKAL: {
@@ -30,10 +31,10 @@ module.exports = {
   },
   TFK_ARCHIVE: {
     URL: process.env.TFK_ARCHIVE_URL,
-    CLIENT_ID: process.env.VFK_ARCHIVE_CLIENT_ID,
-    CLIENT_SECRET: process.env.VFK_ARCHIVE_CLIENT_SECRET,
-    TENANT_ID: process.env.VFK_ARCHIVE_TENANT_ID,
-    SCOPE: process.env.VFK_ARCHIVE_SCOPE
+    CLIENT_ID: process.env.TFK_ARCHIVE_CLIENT_ID,
+    CLIENT_SECRET: process.env.TFK_ARCHIVE_CLIENT_SECRET,
+    TENANT_ID: process.env.TFK_ARCHIVE_TENANT_ID,
+    SCOPE: process.env.TFK_ARCHIVE_SCOPE
   },
   VFK_STATS: {
     URL: process.env.VFK_STATS_URL,

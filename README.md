@@ -2,9 +2,11 @@
 Nodejs script that handles document from vigo-isi
 
 # OVERGANG TIL VFK/TFK ved nyttår
-- Sjekk ./lib/call-archive.js, her er det bare å fjerne overrrideToVTFK-scopet
-- Sjekk ./jobs/syncElevmappe.js, her må det swappes fra skipDSF til manualData (nytt i archive-v2), i tillegg kan 404 sjekken fjernes
-- Sjekk ./jobs/signOff.js, her må det swappes til kommentert ut kode
+- Sett miljørvariabel OVERRIDE_TO_VTFK_ARCHIVE til false, eller fjern den
+- Påvirker følgende filer
+  - [./lib/call-archive.js](./lib/call-archive.js), velger hvilket arkiv som brukes
+  - [./jobs/syncElevmappe.js](./jobs/syncElevmappe.js) swapper fra skipDSF til manualData i payload
+  - [./jobs/signOff.js](./jobs/signOff.js) swapper fra vigo-template til archive-template
 
 # Flyt
 ## ./jobs/queue-ready-documents
