@@ -1,6 +1,6 @@
 (async () => {
   const { logger, logConfig } = require('@vtfk/logger')
-  const { TEAMS_STATUS_WEBHOOK_URLS, TFK_COUNTY, DELETE_FINISHED_AFTER_DAYS, RETRY_INTERVALS_MINUTES} = require('../config')
+  const { TEAMS_STATUS_WEBHOOK_URLS, TFK_COUNTY, DELETE_FINISHED_AFTER_DAYS, RETRY_INTERVALS_MINUTES } = require('../config')
   const axios = require('../lib/axios-instance').getAxiosInstance()
   const { createLocalLogger } = require('../lib/local-logger')
   const { readdirSync } = require('fs')
