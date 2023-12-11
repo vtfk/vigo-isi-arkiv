@@ -2,6 +2,7 @@ const { callArchive } = require('../lib/call-archive')
 const { logger } = require('@vtfk/logger')
 const { fromBuffer } = require('file-type')
 const { extname } = require('path')
+const { FILE_FORMATS } = require('../config')
 
 const getExtFromInfo = (infoStr) => {
   const unknownFileExt = 'UF'
@@ -9,18 +10,14 @@ const getExtFromInfo = (infoStr) => {
     logger('warn', [`Infostring was not string! Setting filetype to Unknown Format (${unknownFileExt})`])
     return unknownFileExt
   }
-  const infoparts = infoStr.split(';')
-  if (infoparts.length !== 10) {
-    logger('warn', ['Length of infoparts was not 10, please check infostring', infoStr, `Setting filetype to Unknown Format (${unknownFileExt})`])
+  const infoparts = infoStr.toLowerCase().split(';')
+  const assumedExts = infoparts.filter(ele => { return ele.includes('.') && FILE_FORMATS.includes(extname(ele).replace('.', '').toUpperCase()) })
+
+  if (assumedExts.length !== 1) {
+    logger('warn', ['Could not find valid ext in infostring, please check infostring', infoStr, `Setting filetype to Unknown Format (${unknownFileExt})`])
     return unknownFileExt
   }
-  const assumedExt = infoparts[6]
-  if (!assumedExt.includes('.')) {
-    logger('warn', ['Index 6 of infoparts does not include ".", please check', infoStr, assumedExt, `Setting filetype to Unknown Format (${unknownFileExt})`])
-    return unknownFileExt
-  }
-  const ext = extname(assumedExt).replace('.', '')
-  return ext
+  return extname(assumedExts[0]).replace('.', '')
 }
 
 /**

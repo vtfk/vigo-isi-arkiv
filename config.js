@@ -48,5 +48,6 @@ module.exports = {
   MOCK_FNR: process.env.MOCK_FNR || false, // If set in env will replace all Fodselsnummer with the FNR set in env (e.g when testing Svarut)
   RETRY_INTERVALS_MINUTES,
   DELETE_FINISHED_AFTER_DAYS: process.env.DELETE_FINISHED_AFTER_DAYS || '30',
-  TEAMS_STATUS_WEBHOOK_URLS: (process.env.TEAMS_STATUS_WEBHOOK_URLS && (process.env.TEAMS_STATUS_WEBHOOK_URLS.split(','))) || []
+  TEAMS_STATUS_WEBHOOK_URLS: (process.env.TEAMS_STATUS_WEBHOOK_URLS && (process.env.TEAMS_STATUS_WEBHOOK_URLS.split(','))) || [],
+  FILE_FORMATS: (process.env.FILE_FORMATS && process.env.FILE_FORMATS.split(',')) || ['pdf', 'docx', 'png', 'jpg']
 }
