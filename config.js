@@ -4,6 +4,7 @@ const RETRY_INTERVALS_MINUTES = (process.env.RETRY_INTERVALS_MINUTES && process.
 
 module.exports = {
   OVERRIDE_TO_VTFK_ARCHIVE: (process.env.OVERRIDE_TO_VTFK_ARCHIVE && process.env.OVERRIDE_TO_VTFK_ARCHIVE === 'true') || false, // ENDRE TIL DEFAULT false, når tiden er inne
+  ONLY_SOKER_N: (process.env.ONLY_SOKER_N && process.env.ONLY_SOKER_N === 'true') || false,
   VFK_COUNTY: {
     COUNTY_NUMBER: process.env.VFK_COUNTY_NUMBER || '39',
     NAME: process.env.VFK_COUNTY_NAME || 'vestfold'

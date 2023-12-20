@@ -1,6 +1,7 @@
 const { readdirSync } = require('fs')
 const { handleDocument } = require('./handle-document')
 const { logConfig, logger } = require('@vtfk/logger')
+const { ONLY_SOKER_N } = require('../config')
 
 /**
  *
@@ -41,6 +42,13 @@ const handleQueue = async (county) => {
       logger('error', [`${document} is missing "Dokumentelement.Dokumenttype", something is very wrong... Please check. skipping document for now`])
       result.unhandledErrors++
       continue
+    }
+    if (ONLY_SOKER_N) { // For creating elevmapper
+      if (documentData.Dokumentelement.Dokumenttype !== 'SOKER_N') {
+        logger('info', ['ONLY_SOKER_N is true, and Dokumenttype is not SOKER_N, so skipping document for now'])
+        result.skippedDocs++
+        continue
+      }
     }
     let flowDefinition
     try {
