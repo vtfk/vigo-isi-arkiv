@@ -20,11 +20,11 @@ const syncElevmappe = async (documentData) => {
     return ssnResponse
   } catch (error) {
     if (error.response) {
-      const { status, message, data } = error.response
+      const { status, data } = error.response
       // VTFK-sjekken
       if (OVERRIDE_TO_VTFK_ARCHIVE && (status === 404 || (data && data?.error === 'VANLIG BOSATT, mangler ADR og ADR1-3'))) { // VTFK-sjekken, kan fjernes etter nyttår
         logger('info', ['syncElevmappe', 'Could not find person in dsf (vtfk archive), syncing with manual data'])
-      } else if (typeof message === 'string' && message.startsWith('Error: Could not find anyone with that ssn')) {
+      } else if (data && typeof data.message === 'string' && data.message.startsWith('Error: Could not find anyone with that ssn')) {
         logger('info', ['syncElevmappe', 'Could not find person in freg, syncing with manual data'])
       } else {
         throw error
