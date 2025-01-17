@@ -50,5 +50,5 @@ module.exports = {
   RETRY_INTERVALS_MINUTES,
   DELETE_FINISHED_AFTER_DAYS: process.env.DELETE_FINISHED_AFTER_DAYS || '30',
   TEAMS_STATUS_WEBHOOK_URLS: (process.env.TEAMS_STATUS_WEBHOOK_URLS && (process.env.TEAMS_STATUS_WEBHOOK_URLS.split(','))) || [],
-  FILE_FORMATS: (process.env.FILE_FORMATS && process.env.FILE_FORMATS.split(',')) || ['pdf', 'docx', 'png', 'jpg']
+  FILE_FORMATS: (process.env.FILE_FORMATS && process.env.FILE_FORMATS.split(',')) || ['PDF', 'DOCX', 'PNG', 'JPG', 'HTML']
 }
