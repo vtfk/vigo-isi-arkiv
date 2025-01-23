@@ -28,55 +28,98 @@
   }
   const failed = readdirSync(`./documents/${county.NAME}/failed`)
 
-  let msg
   let colour
   const problems = queue.length + failed.length
   if (problems === 0) {
-    msg = 'Alt er tipp topp, tommel opp!'
-    colour = '1ea80c'
+    // msg = 'Alt er tipp topp, tommel opp!'
+    colour = 'good'
   } else if (problems > 100) {
-    msg = `${queue.length} dokumenter i kø  + ${failed.length} dokumenter i failed. Dette er kritisk mange dokuemnter og noe må gjøres!`
-    colour = 'a80c0c'
+    // msg = `${queue.length} dokumenter i kø  + ${failed.length} dokumenter i failed. Dette er kritisk mange dokuemnter og noe må gjøres!`
+    colour = 'attention'
   } else if (problems > 50) {
-    msg = `${queue.length} dokumenter i kø  + ${failed.length} dokumenter i failed. Dette er en del dokumenter altså! Og noe bør gjøres!`
-    colour = 'ab57f35'
+    // msg = `${queue.length} dokumenter i kø  + ${failed.length} dokumenter i failed. Dette er en del dokumenter altså! Og noe bør gjøres!`
+    colour = 'attention'
   } else if (problems > 20) {
-    msg = `${queue.length} dokumenter i kø  + ${failed.length} dokumenter i failed. Dette er et antall.. ta en sjekk om du har tid.`
-    colour = 'e2ed13'
+    // msg = `${queue.length} dokumenter i kø  + ${failed.length} dokumenter i failed. Dette er et antall.. ta en sjekk om du har tid.`
+    colour = 'warning'
   } else if (problems > 10) {
-    msg = `${queue.length} dokumenter i kø  + ${failed.length} dokumenter i failed. Det er sikkert noe megafarlig, ta en sjekk om du har tid.`
-    colour = 'e2ed13'
+    // msg = `${queue.length} dokumenter i kø  + ${failed.length} dokumenter i failed. Det er sikkert noe megafarlig, ta en sjekk om du har tid.`
+    colour = 'warning'
   } else {
-    msg = `${queue.length} dokumenter i kø  + ${failed.length} dokumenter i failed. Trolig null stress. Ta en sjekk om du gidder.`
-    colour = 'e2ed13'
+    // msg = `${queue.length} dokumenter i kø  + ${failed.length} dokumenter i failed. Trolig null stress. Ta en sjekk om du gidder.`
+    colour = 'warning'
   }
 
   const failedFacts = failed.length > 0 ? [{ name: 'Dokumentnavn', value: `- ${failed.join(' \r- ')}` }] : []
 
   const teamsMsg = {
-    '@type': 'MessageCard',
-    '@context': 'http://schema.org/extensions',
-    themeColor: colour,
-    summary: msg,
-    title: 'Statusrapport - VIGO til arkiv integrasjon - Telemark',
-    sections: [
+    type: 'message',
+    attachments: [
       {
-        activityTitle: `🕑 **${queue.length}** dokumenter i kø på server`,
-        activitySubtitle: 'Dette er dokumenter som er hentet fra ISI-lokal, og ligger klare for håndtering av scriptet på server',
-        markdown: true
-      },
-      {
-        activityTitle: `😱 **${failed.length}** dokumenter har feilet for mange ganger`,
-        activitySubtitle: `Dette er dokumenter som er forsøkt for mange ganger (${RETRY_INTERVALS_MINUTES.length}), og trenger hjelp`,
-        facts: failedFacts
-      },
-      {
-        activityTitle: `👍 **${finishedYesterday.length}** dokumenter ble håndtert og ferdigstilt i går. ${finishedYesterday.length > 10 ? 'Flotte greier 😎' : 'Tja, det funker vel det og 🙃'}`,
-        activitySubtitle: `Dette er dokumenter som er hentet fra ISI-lokal, og er ferdig håndtert basert på hvilken dokumenttype det er - vil bli slettet fra server etter ${DELETE_FINISHED_AFTER_DAYS} dager.`,
-        markdown: true
+        contentType: 'application/vnd.microsoft.card.adaptive',
+        contentUrl: null,
+        content: {
+          $schema: 'http://adaptivecards.io/schemas/adaptive-card.json',
+          type: 'AdaptiveCard',
+          version: '1.5',
+          msteams: { width: 'full' },
+          body: [
+            {
+              type: 'TextBlock',
+              text: `Statusrapport - VIGO til arkiv integrasjon - Vestfold`,
+              wrap: true,
+              style: 'heading',
+              color: colour
+            },
+            // Kø
+            {
+              type: 'TextBlock',
+              text: `🕑 **${queue.length}** dokumenter i kø på server`,
+              wrap: true,
+              weight: 'Bolder',
+              size: 'Medium'
+            },
+            {
+              type: 'TextBlock',
+              text: 'Dette er dokumenter som er hentet fra ISI-lokal, og ligger klare for håndtering av scriptet på server',
+              wrap: true
+            },
+            // Feilet
+            {
+              type: 'TextBlock',
+              text: `😱 **${failed.length}** dokumenter har feilet for mange ganger`,
+              wrap: true,
+              weight: 'Bolder',
+              size: 'Medium'
+            },
+            {
+              type: 'TextBlock',
+              text: 'Dette er dokumenter som er forsøkt for mange ganger (${RETRY_INTERVALS_MINUTES.length}), og trenger hjelp',
+              wrap: true
+            },
+            {
+              type: 'FactSet',
+              facts: failedFacts
+            },
+            // Håndtert i går
+            {
+              type: 'TextBlock',
+              text: `👍 **${finishedYesterday.length}** dokumenter ble håndtert og ferdigstilt i går. ${finishedYesterday.length > 10 ? 'Flotte greier 😎' : 'Tja, det funker vel det og 🙃'}`,
+              wrap: true,
+              weight: 'Bolder',
+              size: 'Medium'
+            },
+            {
+              type: 'TextBlock',
+              text: '`Dette er dokumenter som er hentet fra ISI-lokal, og er ferdig håndtert basert på hvilken dokumenttype det er - vil bli slettet fra server etter ${DELETE_FINISHED_AFTER_DAYS} dager.',
+              wrap: true
+            }
+          ]
+        }
       }
     ]
   }
+
   const headers = { contentType: 'application/vnd.microsoft.teams.card.o365connector' }
 
   for (const webhook of TEAMS_STATUS_WEBHOOK_URLS) {
