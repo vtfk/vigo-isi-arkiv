@@ -94,7 +94,7 @@
             },
             {
               type: 'TextBlock',
-              text: 'Dette er dokumenter som er forsøkt for mange ganger (${RETRY_INTERVALS_MINUTES.length}), og trenger hjelp',
+              text: `Dette er dokumenter som er forsøkt for mange ganger (${RETRY_INTERVALS_MINUTES.length}), og trenger hjelp`,
               wrap: true
             },
             {
