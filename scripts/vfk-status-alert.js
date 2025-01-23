@@ -111,7 +111,7 @@
             },
             {
               type: 'TextBlock',
-              text: '`Dette er dokumenter som er hentet fra ISI-lokal, og er ferdig håndtert basert på hvilken dokumenttype det er - vil bli slettet fra server etter ${DELETE_FINISHED_AFTER_DAYS} dager.',
+              text: `Dette er dokumenter som er hentet fra ISI-lokal, og er ferdig håndtert basert på hvilken dokumenttype det er - vil bli slettet fra server etter ${DELETE_FINISHED_AFTER_DAYS} dager.`,
               wrap: true
             }
           ]
