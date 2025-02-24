@@ -66,7 +66,7 @@
           body: [
             {
               type: 'TextBlock',
-              text: `Statusrapport - VIGO til arkiv integrasjon - Vestfold`,
+              text: `Statusrapport - VIGO til arkiv integrasjon - Telemark`,
               wrap: true,
               style: 'heading',
               color: colour
